@@ -34,12 +34,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.registry }}/${{ env.image_name }}
-
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
@@ -47,5 +41,6 @@ jobs:
           push: true
           build-args: |
             VERSION=${{ env.n8n_version }}
-          tags: ${{ env.registry }}/${{ env.image_name }}:latest,${{ env.registry }}/${{ env.image_name }}:${{ env.n8n_version }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ${{ env.registry }}/${{ env.image_name }}:latest
+            ${{ env.registry }}/${{ env.image_name }}:${{ env.n8n_version }}
